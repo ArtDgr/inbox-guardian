@@ -2,6 +2,7 @@ name: sweep-free (headless, no laptop, free)
 on:
   schedule:
     - cron: "*/15 * * * *" # every 15m headless — GitHub runners free (public repo unlimited, private 2000m/mo)
+    - cron: "0 21 * * 0-4" # 7am Mon-Fri AEST (21:00 UTC Sun-Thu) — ensures fresh before Claude 7am report
   workflow_dispatch:
   push:
     paths: ["**"]
