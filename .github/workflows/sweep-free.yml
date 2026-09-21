@@ -4,7 +4,7 @@ on:
     - cron: "*/15 * * * *" # every 15m headless — GitHub runners free (public repo unlimited, private 2000m/mo)
   workflow_dispatch:
   push:
-    paths: ["email-agent/**"]
+    paths: ["**"]
 
 permissions:
   contents: write
@@ -12,9 +12,6 @@ permissions:
 jobs:
   sweep:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: email-agent
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -41,4 +38,4 @@ jobs:
           git push || echo "nothing to push"
       - name: Expose via Pages (optional)
         if: false # enable if you want GH Pages: raw.githubusercontent.com is enough for Copilot
-        run: echo "highlights at https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/email-agent/data/highlights.json"
+        run: echo "highlights at https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/data/highlights.json"
