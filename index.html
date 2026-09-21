@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inbox Guardian — Headless</title>
+<style>
+  body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:800px;margin:32px auto;padding:0 16px;color:#111}
+  h1{font-size:22px;margin:0 0 8px} .muted{color:#666;font-size:13px}
+  .card{border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px;margin:12px 0;background:#fff}
+  .urgent{border-left:6px solid #ef4444} .attention{border-left:6px solid #f59e0b}
+  .low{border-left:6px solid #9ca3af}
+  .badge{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;color:#fff;margin-right:8px}
+  .badge.urgent{background:#ef4444} .badge.attention{background:#f59e0b} .badge.low{background:#9ca3af}
+  pre{background:#f9fafb;padding:12px;border-radius:8px;overflow:auto;font-size:12px}
+  a{color:#2563eb}
+</style>
+<h1>Inbox Guardian — suckityouhackers@outlook.com</h1>
+<div class="muted">Headless, free (GitHub Actions every 15m) — no laptop. Source: <a href="data/highlights.json">data/highlights.json</a> • Raw: <a href="https://raw.githubusercontent.com/ArtDgr/inbox-guardian/main/data/highlights.json">raw.githubusercontent.com</a></div>
+<div id="meta" class="muted" style="margin:12px 0">Loading…</div>
+<div id="list"></div>
+<details style="margin-top:24px"><summary>Raw JSON (paste into copilot.microsoft.com)</summary><pre id="raw"></pre></details>
+<div class="muted" style="margin-top:24px">Copilot prompt: <code>Fetch https://artdgr.github.io/inbox-guardian/data/highlights.json and triage URGENT (red) then Needs Attention (yellow)</code> — this Pages URL has CORS, raw does not.</div>
+<script>
+async function load(){
+  const r = await fetch('data/highlights.json', {cache:'no-store'});
+  const j = await r.json();
+  document.getElementById('meta').textContent = `Generated: ${j.generated} • Mailbox: ${j.mailbox} • Mode: ${j.mode} • Folders: ${j.folders_scanned||'ALL'} • Count: ${j.highlights.length}`;
+  document.getElementById('raw').textContent = JSON.stringify(j, null, 2);
+  const list = document.getElementById('list');
+  list.innerHTML = j.highlights.map(h => `
+    <div class="card ${h.label}">
+      <div><span class="badge ${h.label}">${h.label.toUpperCase()} ${h.score}</span><strong>${h.subject}</strong></div>
+      <div class="muted">${h.from} • ${h.folder} • ${h.reason}</div>
+    </div>`).join('') || '<div class="card">Inbox clear — no urgent</div>';
+}
+load().catch(e=>{document.getElementById('meta').textContent='Failed: '+e});
+setInterval(load, 60000);
+</script>
+</html>
