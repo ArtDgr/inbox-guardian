@@ -14,7 +14,7 @@ graph:
 monitoring:
   # empty = ALL folders. Else list like ["Inbox", "Sent Items"]
   include_folders: []
-  exclude_folders: ["Drafts", "Conversation History"]
+  exclude_folders: ["Drafts", "Conversation History", "Junk Email", "Junk", "Spam"]
   # highlight actions when ALLOW_WRITE=true
   # options: flag, categorize, mark_importance
   actions:
