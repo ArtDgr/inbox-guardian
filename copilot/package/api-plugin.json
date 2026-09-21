@@ -48,7 +48,7 @@
         "type": "None"
       },
       "spec": {
-        "url": "https://curly-banks-listen.loca.lt/openapi.yaml"
+        "url": "https://raw.githubusercontent.com/ArtDgr/inbox-guardian/main/copilot/openapi.yaml"
       }
     }
   ]

@@ -1,14 +1,14 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.16/MicrosoftTeams.schema.json",
   "manifestVersion": "1.16",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "id": "b5e6f7a8-1234-4e5f-9a8b-inboxguardian001",
   "packageName": "inbox-guardian",
   "developer": {
     "name": "Inbox Guardian",
-    "websiteUrl": "https://shy-llamas-wait.loca.lt",
-    "privacyUrl": "https://shy-llamas-wait.loca.lt",
-    "termsOfUseUrl": "https://shy-llamas-wait.loca.lt"
+    "websiteUrl": "https://raw.githubusercontent.com/ArtDgr/inbox-guardian",
+    "privacyUrl": "https://raw.githubusercontent.com/ArtDgr/inbox-guardian",
+    "termsOfUseUrl": "https://raw.githubusercontent.com/ArtDgr/inbox-guardian"
   },
   "name": {
     "short": "Inbox Guardian",
@@ -16,7 +16,7 @@
   },
   "description": {
     "short": "Monitors ALL Outlook folders, highlights urgent mail",
-    "full": "Headless agent that monitors ALL Outlook folders via Graph, classifies urgent/attention with LLM, surfaces in Copilot Chat + Outlook flags."
+    "full": "Headless agent that monitors ALL Outlook folders via Graph, classifies urgent/attention with LLM, surfaces in Copilot Chat + Outlook flags. Free GitHub Actions, no laptop."
   },
   "icons": {
     "outline": "outline.png",
@@ -32,10 +32,8 @@
     ]
   },
   "validDomains": [
-    "curly-banks-listen.loca.lt",
-    "loca.lt",
+    "raw.githubusercontent.com",
     "outlook.live.com",
     "graph.microsoft.com"
   ]
 }
-

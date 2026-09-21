@@ -1,14 +1,14 @@
 openapi: 3.0.0
 info:
-  title: Inbox Guardian API — headless
-  version: 0.1.0
+  title: Inbox Guardian API — free headless (GitHub raw)
+  version: 0.2.0
 servers:
-  - url: https://curly-banks-listen.loca.lt
+  - url: https://raw.githubusercontent.com/ArtDgr/inbox-guardian/main
 paths:
-  /highlights:
+  /data/highlights.json:
     get:
       operationId: getHighlights
-      summary: Get urgent + attention highlights
+      summary: Get urgent + attention highlights (ALL folders, free GitHub raw)
       responses:
         '200':
           description: OK
@@ -18,10 +18,18 @@ paths:
                 type: object
                 properties:
                   generated: { type: string }
+                  mailbox: { type: string }
                   highlights:
                     type: array
                     items:
                       type: object
+  /highlights:
+    get:
+      operationId: getHighlightsAlt
+      summary: Alias for local dev (when running email_agent/server.py)
+      responses:
+        '200':
+          description: OK
   /classify:
     post:
       operationId: classify
@@ -39,5 +47,3 @@ paths:
       responses:
         '200':
           description: OK
-
-
