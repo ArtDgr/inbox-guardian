@@ -1,14 +1,14 @@
 openapi: 3.0.0
 info:
-  title: Inbox Guardian API — free headless (GitHub raw)
-  version: 0.2.0
+  title: Inbox Guardian API — free headless (Pages CORS)
+  version: 0.2.1
 servers:
-  - url: https://raw.githubusercontent.com/ArtDgr/inbox-guardian/main
+  - url: https://artdgr.github.io/inbox-guardian
 paths:
   /data/highlights.json:
     get:
       operationId: getHighlights
-      summary: Get urgent + attention highlights (ALL folders, free GitHub raw)
+      summary: Get urgent + attention highlights (ALL folders, free GitHub Pages CORS)
       responses:
         '200':
           description: OK
@@ -26,7 +26,7 @@ paths:
   /highlights:
     get:
       operationId: getHighlightsAlt
-      summary: Alias for local dev (when running email_agent/server.py)
+      summary: Alias for local dev
       responses:
         '200':
           description: OK

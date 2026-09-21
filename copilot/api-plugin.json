@@ -48,7 +48,7 @@
         "type": "None"
       },
       "spec": {
-        "url": "https://raw.githubusercontent.com/ArtDgr/inbox-guardian/main/copilot/openapi.yaml"
+        "url": "https://artdgr.github.io/inbox-guardian/copilot/openapi.yaml"
       }
     }
   ]
