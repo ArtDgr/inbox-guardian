@@ -1,0 +1,44 @@
+name: deploy-headless
+on:
+  push:
+    branches: [main]
+    paths: ["email-agent/**"]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    defaults:
+      run:
+        working-directory: email-agent
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./email-agent
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/inbox-guardian:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Azure login
+        if: vars.ENABLE_AZURE_DEPLOY == 'true'
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Deploy to Container Apps
+        if: vars.ENABLE_AZURE_DEPLOY == 'true'
+        run: |
+          az containerapp update --name inbox-guardian --resource-group rg-inbox-guardian --image ghcr.io/${{ github.repository_owner }}/inbox-guardian:latest
+          echo "Deployed. Check health: https://$(az containerapp show -n inbox-guardian -g rg-inbox-guardian --query properties.configuration.ingress.fqdn -o tsv)/health"

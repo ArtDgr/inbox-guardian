@@ -1,0 +1,55 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/copilot/plugin/v1/manifest.json",
+  "schema_version": "v1",
+  "name": {
+    "short": "Inbox Guardian API",
+    "full": "Inbox Guardian — Email Triage API"
+  },
+  "description": {
+    "short": "Fetch urgent mail highlights",
+    "full": "Exposes highlights.json and live classification for Copilot grounding."
+  },
+  "namespace": "inboxGuardian",
+  "functions": [
+    {
+      "name": "getHighlights",
+      "description": "Returns urgent and needs-attention emails across ALL folders with scores and reasons",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "classify",
+      "description": "Classify a single email subject/body as urgent/attention/low",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "string"
+          },
+          "bodyPreview": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "subject"
+        ]
+      }
+    }
+  ],
+  "runtimes": [
+    {
+      "type": "OpenApi",
+      "auth": {
+        "type": "None"
+      },
+      "spec": {
+        "url": "https://curly-banks-listen.loca.lt/openapi.yaml"
+      }
+    }
+  ]
+}

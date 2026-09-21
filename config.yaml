@@ -1,0 +1,59 @@
+# Email Copilot Agent — HEADLESS (no laptop) config
+# Monitors ALL folders by default. Use exclude_folders to skip.
+graph:
+  authority: "https://login.microsoftonline.com/common" # set AZURE_TENANT_ID to tenant GUID for headless
+  scopes: ["Mail.Read", "Mail.ReadWrite", "MailboxSettings.Read"]
+  # for app-only headless, Graph uses Application permissions (Mail.Read, Mail.ReadWrite) — not Delegated
+  # poll interval in seconds (scheduler)
+  poll_interval_seconds: 180
+  # page size per folder
+  page_size: 25
+  # use delta queries for efficiency (true = track changes)
+  use_delta: true
+
+monitoring:
+  # empty = ALL folders. Else list like ["Inbox", "Sent Items"]
+  include_folders: []
+  exclude_folders: ["Drafts", "Conversation History"]
+  # highlight actions when ALLOW_WRITE=true
+  # options: flag, categorize, mark_importance
+  actions:
+    urgent: { flag: true, category: "Urgent 🔴", importance: "high" }
+    attention: { flag: false, category: "Needs Attention 🟡", importance: "normal" }
+  # state file to avoid re-processing
+  state_file: "data/state.json"
+  # export dashboard json for Copilot / local UI
+  dashboard_file: "data/highlights.json"
+
+classifier:
+  # heuristic thresholds (LLM refines further)
+  urgent_keywords: ["urgent", "asap", "action required", "deadline", "overdue", "escalation", "critical", "incident", "outage", "payment failed", "contract"]
+  attention_keywords: ["review", "please confirm", "approval", "follow up", "meeting", "invoice", "proposal", "signature required"]
+  # VIP senders always flagged as attention minimum
+  vip_senders: []
+  # VIP domains (e.g., your boss, client)
+  vip_domains: []
+  # LLM classification — HEADLESS: use openai (no local Ollama in cloud)
+  # For local dev you can still set provider: ollama
+  llm:
+    enabled: true
+    provider: "openai" # openai | ollama | lmstudio
+    model: "gpt-4o-mini"
+    base_url: "https://api.openai.com/v1"
+    api_key: "env:OPENAI_API_KEY"
+    # if LLM unreachable, fallback to heuristics (never blocks mail flow)
+    fallback_to_heuristics: true
+  # scores 0-100; thresholds
+  thresholds:
+    urgent: 75
+    attention: 50
+
+notifications:
+  # daily digest + real-time Teams webhook (optional)
+  teams_webhook_url: "" # set in .env as TEAMS_WEBHOOK_URL
+  digest_hour_local: 8 # 08:00 local digest
+
+copilot:
+  # declarative agent name shown in M365 Copilot
+  agent_name: "Inbox Guardian"
+  description: "Monitors all Outlook folders and surfaces urgent / needs-attention mail"

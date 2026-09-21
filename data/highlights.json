@@ -1,0 +1,35 @@
+{
+  "generated": "2026-09-21T00:31:17.946096+00:00",
+  "highlights": [
+    {
+      "id": "m1",
+      "subject": "URGENT: Payment failed for invoice #4821",
+      "from": "billing@contoso.com",
+      "label": "urgent",
+      "score": 80,
+      "reason": "keyword:urgent; keyword:invoice; importance_high; attachment+finance_kw",
+      "folder": "Inbox"
+    },
+    {
+      "id": "m3",
+      "subject": "Please review contract draft",
+      "from": "legal@partner.com",
+      "label": "attention",
+      "score": 65,
+      "reason": "keyword:contract; keyword:review; attachment+finance_kw",
+      "folder": "Inbox"
+    },
+    {
+      "id": "m5",
+      "subject": "Outage: API latency spike - action required",
+      "from": "alerts@datadog.com",
+      "label": "attention",
+      "score": 55,
+      "reason": "keyword:action required; importance_high",
+      "folder": "Inbox"
+    }
+  ],
+  "mailbox": "suckityouhackers@outlook.com",
+  "mode": "headless-mock",
+  "folders_scanned": 2
+}

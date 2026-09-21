@@ -1,0 +1,9 @@
+.env
+data/msal_cache.bin
+data/state.json
+data/server.log
+data/public_url.txt
+data/lt.log
+__pycache__/
+*.pyc
+# keep data/highlights.json committed for free headless via raw.githubusercontent.com

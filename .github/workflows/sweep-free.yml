@@ -1,0 +1,44 @@
+name: sweep-free (headless, no laptop, free)
+on:
+  schedule:
+    - cron: "*/15 * * * *" # every 15m headless — GitHub runners free (public repo unlimited, private 2000m/mo)
+  workflow_dispatch:
+  push:
+    paths: ["email-agent/**"]
+
+permissions:
+  contents: write
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: email-agent
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: "pip" }
+      - run: pip install -r requirements.txt
+      - name: Sweep ALL folders
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AUTH_MODE: ${{ vars.AUTH_MODE || 'client_credentials' }}
+          MAILBOX_UPN: ${{ vars.MAILBOX_UPN || 'suckityouhackers@outlook.com' }}
+          MS_REFRESH_TOKEN: ${{ secrets.MS_REFRESH_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ALLOW_WRITE: ${{ vars.ALLOW_WRITE || 'false' }}
+          HEADLESS_MOCK: ${{ vars.HEADLESS_MOCK || 'false' }}
+        run: python -m email_agent.main --dry-run || python -m email_agent.main --once
+      - name: Commit highlights (so Copilot can fetch via raw.githubusercontent.com)
+        run: |
+          git config user.name "inbox-guardian[bot]"
+          git config user.email "bot@inbox-guardian"
+          git add data/highlights.json data/state.json || true
+          git diff --staged --quiet || git commit -m "chore: sweep $(date -u +%FT%TZ) [skip ci]"
+          git push || echo "nothing to push"
+      - name: Expose via Pages (optional)
+        if: false # enable if you want GH Pages: raw.githubusercontent.com is enough for Copilot
+        run: echo "highlights at https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/email-agent/data/highlights.json"

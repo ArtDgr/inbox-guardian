@@ -1,0 +1,43 @@
+openapi: 3.0.0
+info:
+  title: Inbox Guardian API — headless
+  version: 0.1.0
+servers:
+  - url: https://curly-banks-listen.loca.lt
+paths:
+  /highlights:
+    get:
+      operationId: getHighlights
+      summary: Get urgent + attention highlights
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  generated: { type: string }
+                  highlights:
+                    type: array
+                    items:
+                      type: object
+  /classify:
+    post:
+      operationId: classify
+      summary: Classify single email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subject: { type: string }
+                bodyPreview: { type: string }
+                from: { type: string }
+      responses:
+        '200':
+          description: OK
+
+
